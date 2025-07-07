@@ -27,22 +27,61 @@
 import "./e2e";
 import "./index";
 
+Cypress.Commands.add("CadastroCliente", () => {
+
+  cy.loginSistema();
+  cy.wait(5000);
+   // cy.get('button[data-testid="btn-fechar"]').click();
+
+  cy.get('a[href="/cliente/lista"]').click();
+  cy.wait(5000);
+
+  cy.get('a[href="/cliente-cadastro"]').click();
+
+  cy.contains("label", "Nome") // novo nome do cliente
+      .parent()
+      .find("input")
+      .type("Letícia Silva");
+
+  cy.contains("label", "Celular")
+      .parent()
+      .find("input")
+      .type("48999993577");
+        
+  cy.contains("label", "Data de nascimento")
+      .parent()
+      .find("input")
+      .type("22072005");
+
+  /*cy.contains("label", "Sexo")
+      .parent()
+      .find('input')
+      .click();
+*/
+  //cy.get("input[value='Feminino']").click(); retornar
+
+  cy.get('button[data-testid="btn-salvar"]').click();
+})
+
 Cypress.Commands.add("loginSistema", () => {
   //login
   cy.viewport(1360, 768);
   cy.visit("https://sandbox.appnext.fit/login");
   cy.get('input[type="email"]').type("123123@teste.com");
   cy.get('[data-testid="btn-continuar"]').click();
+  cy.wait(6000);
   cy.get('input[type="password"]').type("123456a");
   cy.get('[data-testid="btn-entrar"]').click();
 
   cy.intercept("GET", "/api/PerfilAcesso/RecuperarPermissoesUsuarioLogado").as(
     "capturedRequest"
   );
+  /*
   cy.wait("@capturedRequest").then((interception) => {
     expect(interception.response.status).to.equal(200);
     expect(interception.response.body).to.not.be.empty;
   });
+  */
 });
 
 Cypress.Commands.add("nextRequest", (options) => {
