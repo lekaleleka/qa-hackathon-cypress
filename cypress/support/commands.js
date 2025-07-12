@@ -26,39 +26,49 @@
 
 import "./e2e";
 import "./index";
+import { faker } from '@faker-js/faker';
 
 Cypress.Commands.add("CadastroCliente", () => {
 
   cy.loginSistema();
   cy.wait(5000);
-   // cy.get('button[data-testid="btn-fechar"]').click();
+  // cy.get('button[data-testid="btn-fechar"]').click(); -> desconsiderar, não existe mensagem para fechar na base sendo utilizada
 
   cy.get('a[href="/cliente/lista"]').click();
   cy.wait(5000);
 
   cy.get('a[href="/cliente-cadastro"]').click();
 
+  const randomRabbit = faker.animal.rabbit()
+  console.log('Nome de teste do coelho: ', randomRabbit)
+
+  const numDigitos = faker.string.numeric(11);
+  console.log('O número de contato deve ser: ', numDigitos)
+
+  const birthday = faker.date.birthdate({ min: 18, max: 80, mode: 'age' });
+  const birthdayBR = birthday.toLocaleDateString('pt-BR');
+
   cy.contains("label", "Nome") // novo nome do cliente
-      .parent()
-      .find("input")
-      .type("Letícia Silva");
+    .parent()
+    .find("input")
+    .type(randomRabbit); //adicionar variável para criar o nome
 
   cy.contains("label", "Celular")
-      .parent()
-      .find("input")
-      .type("48999993577");
-        
+    .parent()
+    .find("input")
+    .type(numDigitos); //adicionar variável
+
   cy.contains("label", "Data de nascimento")
-      .parent()
-      .find("input")
-      .type("22072005");
+    .parent()
+    .find("input")
+    .type(birthdayBR); //adicionar variável
 
   /*cy.contains("label", "Sexo")
       .parent()
       .find('input')
       .click();
 */
-  //cy.get("input[value='Feminino']").click(); retornar
+  //cy.get("input[value='Feminino']").click(); -> desconsiderar; sexo foi removido como campo obrigatório
 
   cy.get('button[data-testid="btn-salvar"]').click();
 })

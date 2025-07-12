@@ -1,17 +1,17 @@
 import { faker } from '@faker-js/faker';
 
-it("Inserir ", () => {
-    cy.loginapi();
+it("Inserir e remover", () => {
+  cy.loginapi();
 
-    const randomRabbit = faker.animal.rabbit()
-    console.log('O nome do coelho é: ', randomRabbit)
+  const randomRabbit = faker.animal.rabbit()
+  console.log('O nome do coelho é: ', randomRabbit)
 
-    cy.nextRequest({
+  cy.nextRequest({
     method: "POST",
     url: "/Modalidade/Inserir",
     body: {
-      Descricao: randomRabbit, 
-      Logo: 1, 
+      Descricao: randomRabbit,
+      Logo: 1,
       CorWod: "",
     },
   }).then((response) => {
@@ -26,14 +26,14 @@ it("Inserir ", () => {
     expect(response.status).to.eq(200);
 
     cy.nextRequest({
-    method: "POST",
-    url: "/Modalidade/Inativar",
-    body: {
-      Codigo: responseId,
-    },
-  }).then((response) => {
-    console.log('Inativo: ', response)
-  })
+      method: "POST",
+      url: "/Modalidade/Inativar",
+      body: {
+        Codigo: responseId,
+      },
+    }).then((response) => {
+      console.log('Inativo: ', response)
+    })
 
   });
 });
